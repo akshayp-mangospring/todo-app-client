@@ -15,6 +15,7 @@ const TodoListInput = ({ onSubmit }) => {
         type="text"
         id="title"
         className="form-control rounded-end-0"
+        placeholder="Add Todo List"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required

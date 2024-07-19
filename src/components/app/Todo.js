@@ -50,53 +50,51 @@ const Todo = ({ todo: { content, complete, id }, listId }) => {
 
   return (
     <li className="d-flex align-items-center list-group-item todo-list-item">
-      {
-        isEditing ? (
-          <>
-            <div
-              className="d-flex align-items-center flex-shrink-0"
-              role="button"
-              onClick={() => setIsEditing(false)}
-            >
-              <BackArrow />
-            </div>
+      {isEditing ? (
+        <>
+          <div
+            className="d-flex align-items-center flex-shrink-0"
+            role="button"
+            onClick={() => setIsEditing(false)}
+          >
+            <BackArrow />
+          </div>
+          <input
+            type="text"
+            className="form-control ms-1"
+            placeholder="Add item"
+            value={tempValue}
+            ref={inputRef}
+            onChange={(e) => setTempValue(e.target.value)}
+            onKeyDown={editTodo}
+          />
+          <div role="button" className="d-flex align-items-center text-danger flex-shrink-0 ms-2" onClick={deleteTodo}>
+            <Trash />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="me-auto">
             <input
-              type="text"
-              className="form-control ms-1"
-              placeholder="Add item"
-              value={tempValue}
-              ref={inputRef}
-              onChange={(e) => setTempValue(e.target.value)}
-              onKeyDown={editTodo}
+              type="checkbox"
+              checked={complete}
+              className="form-check-input"
+              role="button"
+              onChange={markTodoDone}
             />
-            <div role="button" className="d-flex align-items-center text-danger flex-shrink-0 ms-2" onClick={deleteTodo}>
-              <Trash />
+            <span className={`fs-6 ms-2 ${complete && 'text-decoration-line-through'}`}>{content}</span>
+          </div>
+          {!complete && (
+            <div
+              className="align-items-center flex-shrink-0 edit-options"
+              role="button"
+              onClick={() => setIsEditing(true)}
+            >
+              <Edit />
             </div>
-          </>
-        ) : (
-          <>
-            <div className="me-auto">
-              <input
-                type="checkbox"
-                checked={complete}
-                className="form-check-input"
-                role="button"
-                onChange={markTodoDone}
-              />
-              <span className={`fs-6 ms-2 ${complete && 'text-decoration-line-through'}`}>{content}</span>
-            </div>
-            {!complete && (
-              <div
-                className="align-items-center flex-shrink-0 edit-options"
-                role="button"
-                onClick={() => setIsEditing(true)}
-              >
-                <Edit />
-              </div>
-            )}
-          </>
-        )
-      }
+          )}
+        </>
+      )}
     </li>
   );
 };

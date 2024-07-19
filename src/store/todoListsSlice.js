@@ -64,6 +64,17 @@ const todoListsSlice = createSlice({
       });
 
     builder
+      .addCase(editTodoList.fulfilled, (state, action) => {
+        const { id, editedTodoList } = action.payload;
+        const list = state.lists.find(list => list.id === id);
+
+        if (list) {
+          list.title = editedTodoList.title;
+          list.description = editedTodoList.description;
+        }
+      });
+
+    builder
       .addCase(deleteTodoListItem.fulfilled, (state, action) => {
         const { listId, itemId } = action.payload;
         const list = state.lists.find(list => list.id === listId);
@@ -94,6 +105,19 @@ export const createTodoList = createAsyncThunk('todolists/create', async (listDa
 
   try {
     return await postData(`${backendUrl}/todolists`, authToken, { title });
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const editTodoList = createAsyncThunk('todolists/editTitle', async (data, { getState, rejectWithValue }) => {
+  const { currentUser } = getState();
+  const authToken = currentUser.auth_token;
+  const { id, title, description } = data;
+
+  try {
+    const resp = await putData(`${backendUrl}/todolists/${id}`, authToken, { title, description });
+    return { id, editedTodoList: resp };
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
