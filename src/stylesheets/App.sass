@@ -1,0 +1,18 @@
+.todo-list-item
+  .edit-options
+    display: none
+  &:hover
+    .edit-options
+      display: block
+
+.delete-todo-list
+  display: none
+  z-index: 3
+  right: 55px
+  top: 50%
+  transform: translateY(-50%)
+
+.accordion-header
+  &:hover
+    .delete-todo-list
+      display: flex

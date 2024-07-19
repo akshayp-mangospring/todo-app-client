@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
-import { getTodoLists } from "@store/todoListsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getTodoLists, selectLists, createTodoList } from "@store/todoListsSlice";
 import TodoList from "@app_components/TodoList";
+import TodoListInput from "@app_components/TodoListInput";
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const myTodoLists = useSelector(selectLists);
 
   useEffect(() => {
     async function fetchData() {
@@ -14,11 +16,18 @@ const HomePage = () => {
     fetchData();
   }, [dispatch]);
 
+  const addTodoList = async (listTitle) => {
+    await dispatch(createTodoList(listTitle));
+  };
+
   return (
-    <>
-      <h1 className="text-center">My Todos</h1>
-      <TodoList />
-    </>
+    <div className='container'>
+      <h1 className="text-center mb-5">My Todos</h1>
+      <TodoListInput onSubmit={addTodoList} />
+      <div className="row d-flex flex-wrap g-3">
+        {myTodoLists?.map((list) => <TodoList key={list.id} list={list} />)}
+      </div>
+    </div>
   );
 };
 

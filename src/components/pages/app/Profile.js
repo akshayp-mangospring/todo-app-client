@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@store/registrationSlice';
 
 const ProfilePage = () => {
-  const {username, email} = useSelector(selectCurrentUser);
+  const { username, email } = useSelector(selectCurrentUser);
 
   return (
     <>
